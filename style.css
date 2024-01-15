@@ -1,0 +1,27 @@
+body {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    place-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: black;
+}
+
+#dataGosterimYeri {
+    margin: auto;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: white;
+}
+
+button {
+    cursor: pointer;
+    margin-top: 30px;
+    padding:20px;
+    font-size: 36px;
+    width:40%;
+}
+
+#dataGosterimYeri * {
+    color:red;
+}
