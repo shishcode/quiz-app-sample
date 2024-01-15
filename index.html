@@ -1,18 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JS PRACTICE</title>
+    <title>Quiz Uygulaması</title>
     <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
-    <div id="dataGosterimYeri">
+    <div>
+        <h1 id="question-number">Süper Test</h1>
     </div>
-    <button id="sonraki">sonraki kişi</button>
-    <button id="sec">Kişiyi İşe Al</button>
-    <div id="secilenKisi">
+    <div id="quiz-container">
+        <div id="questionContainer">
+            <img id="question-image" src=""/>
+            <div id="question"></div>
+        </div>
+        <ul id="answer-list"></ul>
     </div>
+    <button id="next-question">Sonraki</button>
+    <button id="reset">Baştan Başlat</button>
+    <div id="notification" class="notification"></div>
+
     <script src="./script.js"></script>
 </body>
+
 </html>

@@ -1,112 +1,125 @@
-const veri = [
+// script.js
+
+// Define the quiz data
+const quizData = [
     {
-        adi: "Ali",
-        soyadi: "ÇALIŞKAN",
-        yas: 24,
-        uzmanlik: 'Js',
-        begeniler: ['ders çalışmak', 'sanat', 'sinema', 'buz hokeyi', 'yemek yapmak']
+        question: "En büyük gezegen hangisidir?",
+        imgLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Planet_collage_to_scale.jpg/660px-Planet_collage_to_scale.jpg',
+        answers: [
+            { text: "Merkür", isCorrect: false },
+            { text: "Venüs", isCorrect: false },
+            { text: "Jüpiter", isCorrect: true },
+            { text: "Dünya", isCorrect: false }
+        ]
     },
     {
-        adi: "Veli",
-        soyadi: "DEMİR",
-        yas: 24,
-        uzmanlik: 'CSS',
-        begeniler: ['spor', 'sinema', 'kodlamak']
-    }, 
-    {
-        adi: "Ayşe",
-        soyadi: "BAŞARILI",
-        yas: 24,
-        uzmanlik: 'HTML CSS',
-        begeniler: ['sanat', 'sinema']
+        question: "Hangisi bir web uygulamalarının temel unsurlarından değildir?",
+        imgLink: 'https://plus.unsplash.com/premium_photo-1678566111481-8e275550b700?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29kZXxlbnwwfHwwfHx8MA%3D%3D',
+        answers: [
+            { text: "Javascript", isCorrect: false },
+            { text: "CSS", isCorrect: false },
+            { text: "HTML", isCorrect: false },
+            { text: "Java", isCorrect: true }
+        ]
     },
     {
-        adi: "Ahmet",
-        soyadi: "GÜNEŞ",
-        yas: 24,
-        uzmanlik: 'HTML CSS JS',
-        begeniler: ['sanat', 'sinema', 'bisiklet sürme']
+        question: "En büyük hayvan hangisidir?",
+        imgLink: 'https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGFuaW1hbHN8ZW58MHx8MHx8fDA%3D',
+        answers: [
+            { text: "Fil", isCorrect: false },
+            { text: "Kedi", isCorrect: false },
+            { text: "Zebra", isCorrect: false },
+            { text: "Mavi Balina", isCorrect: true }
+        ]
     }
-]
+];
 
+let activeQuestionIndex = 0;
 
-// let veriListesiUzunlugu = veri.length;
-// console.log('liste uzunluğu', veriListesiUzunlugu);
+// Function to load a question
+function loadQuestion() {
+    const currentQuestion = quizData[activeQuestionIndex];
+    const questionElement = document.getElementById('question');
+    const answerListElement = document.getElementById('answer-list');
+    const imageElement = document.getElementById('question-image');
+    const questionNumberElement = document.getElementById('question-number');
 
+    // Set the question number
+    questionNumberElement.textContent = activeQuestionIndex + 1 + '/' + quizData.length;
 
-// let alininBegenisi = veri[0].begeniler; 
-// // alininBegenisi.forEach(begeni => console.log(begeni));
-// alininBegenisi.forEach(begeni => {
-//     let p = document.createElement('p');
-//     p.textContent = begeni;
-//     p.style.color = 'red';
-//     p.style.fontSize = '24px'
-//     veriElementi.appendChild(p);
-// });
+    // Clear previous question and answers when it is loaded
+    questionElement.textContent = '';
+    answerListElement.innerHTML = '';
 
-// console.log(alininBegenisi);
+    // Set the question text
+    questionElement.textContent = currentQuestion.question;
 
+    // Set the image for the question
+    imageElement.setAttribute('src', currentQuestion.imgLink)
 
-let index = 0;
-
-const verileriYukle = () => {
-    let mevcutKisi = veri[index];
-    
-    let veriElementi = document.querySelector('#dataGosterimYeri');
-    let isim = document.createElement('h1');
-    isim.textContent = mevcutKisi.adi + ' ' + mevcutKisi.soyadi;
-    veriElementi.appendChild(isim);
-
-    let yas = document.createElement('h2');
-    yas.textContent = mevcutKisi.yas;
-    veriElementi.appendChild(yas);
-
-    let uzmanlik = document.createElement('h2');
-    uzmanlik.textContent = mevcutKisi.uzmanlik;
-    veriElementi.appendChild(uzmanlik);
-
-    mevcutKisi.begeniler.forEach(begeni => {
-        let veriYeri = document.querySelector('#dataGosterimYeri');
-        let li = document.createElement('li');
-        li.textContent = begeni;
-        veriElementi.appendChild(li);
-    })
+    // Add the answer choices
+    currentQuestion.answers.forEach(answer => {
+        const li = document.createElement('li');
+        li.textContent = answer.text;
+        li.onclick = () => checkAnswer(answer.isCorrect);
+        answerListElement.appendChild(li);
+    });
 }
 
-verileriYukle();
+// Start the quiz
+loadQuestion();
 
-
-const sonrakiKisiyeGec = () => {
-    let veriElementi = document.querySelector('#dataGosterimYeri');
-    veriElementi.innerHTML = '';
-    if(index === veri.length - 1)
-    {
-        index = 0;
-        alert('liste sonuna gelindi')
+// Handle the next question button click
+document.getElementById('next-question').addEventListener('click', () => {
+    if (activeQuestionIndex < quizData.length) {
+        document.getElementById('next-question').style.display = '';
+        activeQuestionIndex++
+        if(activeQuestionIndex == quizData.length - 1) {
+            document.getElementById('next-question').style.visibility = 'hidden';
+        }
+        loadQuestion();
     } else {
-        index++;
+        activeQuestionIndex = 0;
+        showNotification('Test tamamlandı zaten!', 3000, 'purple');
     }
-    verileriYukle();
+});
+
+// Handle the Reset the quiz button click
+document.getElementById('reset').addEventListener('click', () => {
+        activeQuestionIndex = 0;
+        showNotification('Test  baştan başladı!', 3000, 'purple');
+        loadQuestion();
+        document.getElementById('next-question').style.visibility = 'visible';
+});
+
+// Function to show notification
+function showNotification(message, duration = 3000, color = 'green') {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.classList.add('show');
+    notification.style.backgroundColor = color;
+
+    let quizContainer = document.querySelector('#quiz-container');
+    quizContainer.style.border = '2px solid ' + color;
+
+    // Hide the notification after the duration
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, duration);
 }
 
-
-let sonraki = document.querySelector('button');
-
-sonraki.addEventListener('click', sonrakiKisiyeGec);
-
-const kisiyiIseAl = () => {
-   let eklenecekYer = document.querySelector('#secilenKisi');
-    
-    let yazi = document.createElement('p');
-
-    let mevcutKisi = veri[index];
-    yazi.textContent = mevcutKisi.adi + ' ' + mevcutKisi.soyadi + ' isimli kişi seçildi!';
-    yazi.style.color = 'pink';
-    eklenecekYer.innerHTML = '';
-    eklenecekYer.appendChild(yazi);
+// Modify checkAnswer function to use showNotification
+function checkAnswer(isCorrect) {
+    if (isCorrect) {
+        showNotification('Doğru Cevap!', 3000, 'green');
+    } else {
+        showNotification('Yanlış Cevap. Olmadı!', 3000, 'red');
+    }
+    // Load the next question if you want
+    //activeQuestionIndex++;
+    if (activeQuestionIndex < quizData.length) {
+        loadQuestion();
+    } else {
+        showNotification('Test tamamlandı!', 3000, 'purple');
+    }
 }
-
-
-let kisiyiIseAlmaButonu = document.querySelector('#sec');
-kisiyiIseAlmaButonu.addEventListener('click', kisiyiIseAl);
-
